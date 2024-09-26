@@ -1,68 +1,161 @@
 {% extends 'Common/base.html' %}
 
 {% block body %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Page</title>
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>User Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f0f0f0;
         }
-        .profile-card {
-            margin-top: 50px;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+        .resume-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 800px;
         }
-        .profile-img {
-            width: 150px;
-            height: 150px;
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
+            border: 3px solid #007BFF;
+        }
+
+        .section-title {
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            color: #007BFF;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+        }
+
+        .btn {
+            margin: 5px;
         }
     </style>
 </head>
 <body>
+    <div class="container resume-container">
+        <div class="profile-header">
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card profile-card text-center">
-                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-img">
-                <h2 class="card-title">John Doe</h2>
-                <p class="card-text">Web Developer & Designer</p>
-                <p class="card-text">Passionate about creating interactive and responsive web applications.</p>
-                <div>
-                    <a href="{% url 'addJobPage' %}" class="btn btn-primary">Add Job</a>
-                    <a href="{% url 'createdJob' %}" class="btn btn-primary">Created Job</a>
-                    <a href="#" class="btn btn-outline-secondary">Message</a>
-                </div>
-                <div class="mt-3">
-                    <a href="#" class="text-decoration-none me-2"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-decoration-none me-2"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-decoration-none"><i class="fab fa-linkedin"></i></a>
-                    
-                </div>
+            
+            
+            <img src="/{{ Information.Profile_Pic }}" alt="Profile Picture" class="profile-pic">
+            <h1 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h1>
+            
+            
+            {% if request.user.user_type == 'recruiter' %}
+            <a href="{% url 'createdJob' %}" class="btn btn-outline-secondary"><b>CREATED JOB</b></a>
+            <a href="{% url 'addJobPage' %}" class="btn btn-outline-secondary"><b>ADD JOB</b></a>                
+            {% endif %}
+
+            {% if request.user.user_type == 'jobseeker' %}
+            <a href="{% url 'appliedJob' %}" class="btn btn-outline-secondary"><b>APPLIED JOB</b></a>      
+            {% endif %}
+                
+                
+
+            
+
+            <div class="text-center">
+            <a href="{% url 'MySettingsPage' %}" class="btn btn-outline-secondary">Settings</a>
             </div>
+
+            
+            <h2 class="profile-designation">{{ Information.Designation }}</h2>
+            <p>{{ user.email }}</p>
+            <p><strong>Contact Number:</strong> {{ Information.contact_No }}</p>
+        </div>
+
+        <div class="profile-info">
+            <h3 class="section-title">Personal Information</h3>
+            <p><strong>Age:</strong> {{ Information.Age }}</p>
+            <p><strong>Gender:</strong> {{ Information.Gender }}</p>
+
+            <h3 class="section-title">Career Summary</h3>
+            <p>{{ Information.Carrer_Summary }}</p>
+
+            <h3 class="section-title">Languages</h3>
+            <p>
+                {% for language in Languages %}
+                    {{ language.Language_Name }} ({{ language.Proficiency_Level }}){% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No languages added.
+                {% endfor %}
+            </p>
+
+            <h3 class="section-title">Skills</h3>
+            <p>
+                {% for skill in Skills %}
+                    {{ skill.Skill_Name }} ({{ skill.Skill_Level }}){% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No skills added.
+                {% endfor %}
+            </p>
+
+            <h3 class="section-title">Education</h3>
+            <ul class="list-group">
+                {% for edu in Education %}
+                    <li class="list-group-item">{{ edu.institution_name }} - {{ edu.degree }} ({{ edu.start_date }} to {{ edu.end_date }})</li>
+                {% empty %}
+                    <li class="list-group-item">No education records found.</li>
+                {% endfor %}
+            </ul>
+
+            <h3 class="section-title">Interests</h3>
+            <p>
+                {% for interest in Interests %}
+                    {{ interest.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    No interests added.
+                {% endfor %}
+            </p>
+
+            <h3 class="section-title">Experience</h3>
+            <ul class="list-group">
+                {% for exp in Experiences %}
+                    <li class="list-group-item">{{ exp.job_title }} at {{ exp.company_name }} ({{ exp.start_date }} to {{ exp.end_date }}) - {{ exp.description }}</li>
+                {% empty %}
+                    <li class="list-group-item">No experience records found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="text-center">
+
+            <br>
+            
+            <a href="{% url 'addLanugage' %}" class="btn btn-primary">Add Language</a>
+            <a href="{% url 'addSkillPage' %}" class="btn btn-primary">Add Skill</a>
+            <a href="{% url 'add_education' %}" class="btn btn-primary">Add Education</a>
+            <a href="{% url 'add_interest' %}" class="btn btn-primary">Add Interest</a>
+            <a href="{% url 'add_experience' %}" class="btn btn-primary">Add Experience</a>
         </div>
     </div>
-</div>
 
-<!-- Font Awesome CDN for social icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 
 {% endblock body %}

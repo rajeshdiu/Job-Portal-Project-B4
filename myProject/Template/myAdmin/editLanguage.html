@@ -1,0 +1,20 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<div class="container">
+    <h2>Edit Language</h2>
+    <form action="{% url 'LanguageEditbyUser' language.id %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="language">Language</label>
+            <input type="text" name="language" id="language" class="form-control" value="{{ form.language.value }}" required>
+        </div>
+        <div class="form-group">
+            <label for="proficiency_level">Proficiency Level</label>
+            <input type="text" name="proficiency_level" id="proficiency_level" class="form-control" value="{{ form.proficiency_level.value }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Language</button>
+        <a href="{% url 'profilePage' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="card-title text-center">{{ job.job_title }}</h2>
+            <p class="text-center mb-0">{{ job.company_name }} - {{ job.location }}</p>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Job Details Section -->
+                <div class="col-md-8">
+                    <h4 class="mb-3">Job Description</h4>
+                    <p>{{ job.description }}</p>
+                    
+                    <h5 class="mt-4">Skills Required</h5>
+                    <p>{{ job.skills_required|default:"Not specified" }}</p>
+
+                    <h5 class="mt-4">Job Details</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Employment Type: </strong>{{ job.employment_type|title }}</li>
+                        <li class="list-group-item"><strong>Salary: </strong>${{ job.salary|default:"Not disclosed" }}</li>
+                        <li class="list-group-item"><strong>Application Deadline: </strong>{{ job.posted_date|date:"F j, Y" }}</li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Apply Section -->
+                <div class="col-md-4">
+                    <h4 class="mb-3">Company Info</h4>
+                    <p><strong>{{ job.company_name }}</strong></p>
+                    <p><i class="fas fa-map-marker-alt"></i> {{ job.location }}</p>
+
+                    <h4 class="mt-4">Ready to Apply?</h4>
+                    <a href=" {% url 'ApplyNow' job.job_title job.id %} " class="btn btn-success btn-block">Apply Now</a>
+                    
+                    <div class="mt-4">
+                        <h5>Job Posted On</h5>
+                        <p>{{ job.posted_date|date:"F j, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'JobFeed' %}" class="btn btn-outline-secondary">Back to Job Feed</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock body %}

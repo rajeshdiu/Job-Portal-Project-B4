@@ -1,0 +1,121 @@
+{% extends 'Common/base.html' %}
+
+
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Messages</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .message-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+        }
+        .message-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .message-item:last-child {
+            border-bottom: none;
+        }
+        .rejected {
+            color: #dc3545; /* Red color for rejected status */
+        }
+        .interviewed {
+            color: #28a745; /* Green color for selected status */
+        }
+        .no-data {
+            color: #6c757d; /* Grey color for empty states */
+            font-style: italic;
+        }
+        h4 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .message-timestamp {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="message-header">
+            <h1>Your Messages</h1>
+        </div>
+    
+        {% if messages %}
+            <h4 class="mt-4">Messages:</h4>
+            <ul class="list-group mb-3">
+                {% for message in messages %}
+                    <li class="list-group-item message-item">
+                        <strong>{{ message.sender.username }}:</strong> {{ message.content }}
+                        <span class="message-timestamp float-right">{{ message.timestamp|date:"D, d M Y H:i" }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-data">No messages found.</p>
+        {% endif %}
+    
+        {% if rejected_apps %}
+            <h4 class="mt-4">Rejected for Interview:</h4>
+            <ul class="list-group">
+                {% for app in rejected_apps %}
+                    <li class="list-group-item message-item">
+                        <strong>Application for:</strong> {{ app.job.job_title }} at {{ app.job.company_name }} 
+                        - Status: <span class="rejected">Rejected</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-data">No rejected applications found.</p>
+        {% endif %}
+    
+        {% if interviewed_apps %}
+            <h4 class="mt-4">Selected for Interview:</h4>
+            <ul class="list-group">
+                {% for app in interviewed_apps %}
+                    <li class="list-group-item message-item">
+                        <strong>Application for:</strong> {{ app.job.job_title }} at {{ app.job.company_name }} 
+                        - Status: <span class="interviewed">Selected for Interview</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-data">No applications selected for interview found.</p>
+        {% endif %}
+    </div>
+    
+    <!-- jQuery, Popper.js, and Bootstrap JS CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
+
+{% endblock body %}
+    
+

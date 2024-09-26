@@ -1,0 +1,26 @@
+
+<head>
+  <!-- Other head elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<ul>
+  <li><a href="{% url 'JobFeed' %}">Job Feed</a></li>
+  <li><a href="#news">News</a></li>
+
+  {% if request.user.user_type == 'recruiter' %}
+      <!-- You can add recruiter-specific links here if needed -->
+  {% endif %}
+
+  <li><a>{{ request.user.user_type }}</a></li>
+
+  <li style="float:right">
+      <a class="active" href="{% url 'my_messages' %}">
+          <i class="fas fa-envelope"></i> <!-- Font Awesome message icon -->
+      </a>
+  </li>
+
+  <li style="float:right"><a class="active" href="{% url 'profile_view' %}">Profile-{{ request.user.username }}</a></li>
+  <li style="float:right"><a class="active" href="{% url 'logoutPage' %}">Logout</a></li>
+</ul>
+

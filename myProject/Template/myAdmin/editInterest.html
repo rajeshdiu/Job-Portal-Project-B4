@@ -1,0 +1,16 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<div class="container">
+    <h2>Edit Interest</h2>
+    <form action="{% url 'edit_interest' interest.id %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="interest">Interest</label>
+            <input type="text" name="interest" id="interest" class="form-control" value="{{ form.interest.value }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Interest</button>
+        <a href="{% url 'profilePage' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<div class="container">
+    <h2>Edit Education</h2>
+    <form action="{% url 'edit_education' education.id %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="institution_name">Institution Name</label>
+            <input type="text" name="institution_name" id="institution_name" class="form-control" value="{{ form.institution_name.value }}" required>
+        </div>
+        <div class="form-group">
+            <label for="degree">Degree</label>
+            <input type="text" name="degree" id="degree" class="form-control" value="{{ form.degree.value }}" required>
+        </div>
+        <div class="form-group">
+            <label for="start_date">Start Date</label>
+            <input type="date" name="start_date" id="start_date" class="form-control" value="{{ form.start_date.value }}" required>
+        </div>
+        <div class="form-group">
+            <label for="end_date">End Date</label>
+            <input type="date" name="end_date" id="end_date" class="form-control" value="{{ form.end_date.value }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Education</button>
+        <a href="{% url 'profilePage' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

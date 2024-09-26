@@ -1,0 +1,44 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="text-center">Send Message to {{ application.Full_Name }}</h1>
+
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="messageText">Message</label>
+            <textarea class="form-control" id="messageText" name="messageText" rows="10" required>
+                Congratulations {{ application.Full_Name }}!
+            
+                We are thrilled to inform you that you have been selected for an interview for the position of {{ job.job_title }}
+            
+                This is a wonderful opportunity for you to showcase your skills and discuss how you can contribute to our team. The interview is scheduled at our office located at {{job.company_name}}
+            
+                Please feel free to reach out if you have any questions or need further assistance. We look forward to meeting you!
+            
+                Best regards
+                {{ application.job.company_name }}, {{ request.user.username}}
+            </textarea>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="window.history.back();">Close</button>
+            <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock body %}

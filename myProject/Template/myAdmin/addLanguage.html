@@ -1,0 +1,113 @@
+{% extends 'Common/base.html' %}
+
+
+{% block body %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Form</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Add Language</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="usertype">Select Language:</label>
+                <select id="usertype" name="Language_Id" required>
+
+                    <option >Select Language</option>
+                    
+                    {% for i in all_lan %}
+                        
+                    <option value="{{i.id}}">{{i.Language_Name}}</option>
+                    {% endfor %}
+                        
+
+                </select>
+
+
+                <label for="usertype">Proficiency Level::</label>
+                <select id="usertype" name="Proficiency_Level" required>
+                    
+                    <option >Select Proficiency Level</option>
+                    <option value="beginner">Begineer</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="expert">Expert</option>
+                </select>
+
+                
+                <br>
+                <br>
+
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+{% endblock body %}
+
+    

@@ -1,0 +1,160 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+
+<!-- Add this block for messages -->
+{% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- Rest of your body content -->
+<div class="container mt-5">
+    <h1 class="text-center mb-4">My Profile</h1>
+
+    <h2>My Languages</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Language Name</th>
+                <th>Proficiency</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in myLanguage %}
+            <tr>
+                <td>{{ i.Language_Name }}</td>
+                <td>{{ i.Proficiency_Level }}</td>
+                <td>
+                    <a href="{% url 'delete_language' i.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>My Skills</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Skill Name</th>
+                <th>Skill Level</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in mySkill %}
+            <tr>
+                <td>{{ i.Skill_Name }}</td>
+                <td>{{ i.Skill_Level }}</td>
+                <td>
+                    <a href="{% url 'delete_skill' i.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>My Interests</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Interest Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in myInterest %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>
+                    <a href="{% url 'delete_interest' i.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" class="text-center">No interests found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>My Education</h2>
+    <div class="table-scroll">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Institute Name</th>
+                    <th>Degree</th>
+                    <th>Field of Study</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in myEducation %}
+                <tr>
+                    <td>{{ e.institution_name }}</td>
+                    <td>{{ e.degree }}</td>
+                    <td>{{ e.field_of_study }}</td>
+                    <td>{{ e.start_date|date:"Y-m-d" }}</td>
+                    <td>{{ e.end_date|date:"Y-m-d" }}</td>
+                    <td>
+                        <a href="{% url 'delete_education' e.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>My Experience</h2>
+    <div class="table-scroll">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in myExperience %}
+                <tr>
+                    <td>{{ e.job_title }}</td>
+                    <td>{{ e.company_name }}</td>
+                    <td>{{ e.start_date|date:"Y-m-d" }}</td>
+                    <td>{{ e.end_date|date:"Y-m-d" }}</td>
+                    <td>{{ e.description }}</td>
+                    <td>
+                        <a href="{% url 'delete_experience' e.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No experience found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Bootstrap CDN links -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js" integrity="sha384-5mQZ3M1Nl3QY2PjD9g5IXFX9MczRlD86+9vU6LvIsRTFi0m5E4FQjrKc31x+mLq1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-wXlA1pKZNUhx1deH0nJl6+PH5YOfGpS8W8wZNG2R9H81XkP8ViZ7BoVV2ObR1j6Y" crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock body %}

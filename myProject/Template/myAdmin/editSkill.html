@@ -1,0 +1,20 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<div class="container">
+    <h2>Edit Skill</h2>
+    <form action="{% url 'skillEditByUser' skill.id %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="skill">Skill</label>
+            <input type="text" name="skill" id="skill" class="form-control" value="{{ form.skill.value }}" required>
+        </div>
+        <div class="form-group">
+            <label for="skill_level">Skill Level</label>
+            <input type="text" name="skill_level" id="skill_level" class="form-control" value="{{ form.skill_level.value }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Skill</button>
+        <a href="{% url 'profilePage' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

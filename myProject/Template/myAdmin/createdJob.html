@@ -49,6 +49,8 @@
                     
                 <a href="  {% url 'editJob' i.id %}  " class="btn btn-primary">Edit Now</a>
                 <a href="  {% url 'deleteJob' i.id %}  " class="btn btn-primary">Delete Now</a>
+                <a href="  {% url 'applicantList' i.id %}  " class="btn btn-primary">Applicants</a>
+                <a href="  {% url 'message_list' i.id %}  " class="btn btn-primary">Message List</a>
                 {% endif %}
                     
             </div>

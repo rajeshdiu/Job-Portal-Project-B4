@@ -1,0 +1,71 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Jobs You've Applied For</h1>
+
+    <!-- Check if the user has applied to any jobs -->
+    {% if Job %}
+        <!-- Responsive table wrapper -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Company</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Employment Type</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Resume</th>
+                        <th scope="col">Actions</th>
+                        <th scope="col">Chat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job_application in Job %}
+                    <tr>
+                        <td>{{ job_application.job.job_title }}</td>
+                        <td>{{ job_application.job.company_name }}</td>
+                        <td>{{ job_application.job.location }}</td>
+                        <td>${{ job_application.job.salary|default:"N/A" }}</td>
+                        <td>{{ job_application.job.employment_type|title }}</td>
+                        <td>
+                            {% if job_application.status == 'pending' %}
+                                <span class="badge badge-warning">Pending</span>
+                            {% elif job_application.status == 'interview_scheduled' %}
+                                <span class="badge badge-success">Interview Scheduled</span>
+                                <!-- Show the Message button when status is 'interview_scheduled' -->
+                               
+                            {% elif job_application.status == 'rejected' %}
+                                <span class="badge badge-danger">Rejected</span>
+                            {% elif job_application.status == 'hired' %}
+                                <span class="badge badge-primary">Hired</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ job_application.Resume.url }}" target="_blank" class="btn btn-outline-info btn-sm">Download</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'viewJob' job_application.job.id %}" class="btn btn-outline-secondary btn-sm">View Job</a>
+                        </td>
+                        <td> <a href=" {% url 'viewMessage' job_application.id %} " class="btn btn-outline-secondary btn-sm">View Message</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            You haven't applied for any jobs yet.
+        </div>
+    {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock body %}
