@@ -1,0 +1,100 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            background-color: #e9ecef;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-control, .form-control-file {
+            border-radius: 5px;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+
+        <h1>You are going to apply for {{ specific_job.job_title }}</h1>
+
+        {% if already_exists %}
+            <h2 class="text-danger">Already Applied</h2>
+        {% else %}
+            <form action=" " method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" name="Full_Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="workExperience">Work Experience</label>
+                    <input type="text" class="form-control" id="workExperience" name="Work_Experience" required>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <input type="text" class="form-control" id="skills" name="Skills" required>
+                </div>
+                <div class="form-group">
+                    <label for="linkedinUrl">LinkedIn URL</label>
+                    <input type="url" class="form-control" id="linkedinUrl" name="Linkedin_URL">
+                </div>
+                <div class="form-group">
+                    <label for="expectedSalary">Expected Salary</label>
+                    <input type="number" class="form-control" id="expectedSalary" name="Expected_Salary" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="resume">Resume (PDF, DOC, DOCX)</label>
+                    <input type="file" class="form-control-file" id="resume" name="Resume" accept=".pdf,.doc,.docx" required>
+                </div>
+                <div class="form-group">
+                    <label for="cover">Cover Letter</label>
+                    <textarea class="form-control" id="cover" name="Cover" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit Application</button>
+            </form>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>
+
+{% endblock body %}

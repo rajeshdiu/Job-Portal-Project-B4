@@ -1,0 +1,67 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+
+<style>
+    body {
+        background-color: #f4f4f4;
+    }
+    
+    .card {
+        transition: transform 0.2s;
+    }
+    
+    .card:hover {
+        transform: scale(1.02);
+    }
+    
+    .search-bar .input-group {
+        width: 100%;
+    }
+    
+</style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Job Feed</h1>
+    <div class="search-bar mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for jobs..." id="search-input">
+            <div class="input-group-append">
+                <button class="btn btn-success" id="search-button">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="job-list">
+        {% for i in Job %}
+        <div class="card mb-3">
+            <div class="card-body">
+
+                <h2 class="card-title">{{ i.job_title }}</h2>
+                <h6 class="card-subtitle mb-2 text-muted">Company: {{ i.company_name }}</h6>
+                <p class="card-text">Location: {{ i.location }}</p>
+                <p class="card-text">Salary: ${{ i.salary|default:"Not specified" }}</p>
+                <p class="card-text">Employment Type: {{ i.employment_type }}</p>
+                <p class="card-text">Deadline: {{ i.application_deadline|date:"F j, Y" }}</p>
+                <p class="card-text">Posted Date: {{ i.posted_date|date:"F j, Y" }}</p>
+                <p class="card-text">Description: {{ i.description }}</p>
+
+                
+                {% if request.user.user_type == 'jobseeker' %}
+                    
+                <a href=" {% url 'ApplyNow' i.job_title i.id %} " class="btn btn-primary">Apply Now</a>
+                {% endif %}
+                    
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+{% endblock body %}

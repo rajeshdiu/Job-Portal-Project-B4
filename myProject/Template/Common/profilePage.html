@@ -1,0 +1,68 @@
+{% extends 'Common/base.html' %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-card {
+            margin-top: 50px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card profile-card text-center">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-img">
+                <h2 class="card-title">John Doe</h2>
+                <p class="card-text">Web Developer & Designer</p>
+                <p class="card-text">Passionate about creating interactive and responsive web applications.</p>
+                <div>
+                    <a href="{% url 'addJobPage' %}" class="btn btn-primary">Add Job</a>
+                    <a href="{% url 'createdJob' %}" class="btn btn-primary">Created Job</a>
+                    <a href="#" class="btn btn-outline-secondary">Message</a>
+                </div>
+                <div class="mt-3">
+                    <a href="#" class="text-decoration-none me-2"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-decoration-none me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-decoration-none"><i class="fab fa-linkedin"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome CDN for social icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+{% endblock body %}
