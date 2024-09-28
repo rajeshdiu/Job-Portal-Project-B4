@@ -19,56 +19,6 @@ from myApp.models import *
 
 from django.templatetags.static import static  # Import the static function
 
-
-def signupPage(request):
-    if request.method == "POST":
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
-        user_type = request.POST.get('user_type')
-        
-        if password==confirm_password:
-            
-            user = Custom_User.objects.create_user(
-                username=username,
-                password=password,
-                email=email,
-                user_type=user_type,
-                )
-  
-        messages.success(request, "Account created successfully.")
-        return redirect("signinPage")
-
-    return render(request, 'Common/signup.html')
-
-
-def signinPage(request):
-
-    if request.method == "POST":
-
-        username= request.POST.get('username')
-        password= request.POST.get('password')
-
-        user = authenticate(username=username, password=password)
-
-        print(user)
-
-        if user:
-            login(request,user)
-            return redirect("JobFeed")
-        else:
-            messages.warning(request, "User not found")
-            
-
-    return render(request,'Common/login.html')
-
-def logoutPage(request):
-
-    logout(request)
-
-    return redirect('signinPage')
-
 @login_required
 def JobFeed(request):
     
@@ -81,7 +31,7 @@ def JobFeed(request):
     
     return render(request,"Common/JobFeed.html",context)
 
-
+@login_required
 def addJobPage(request):
     current_user=request.user
     if current_user.user_type == "recruiter":
@@ -104,7 +54,7 @@ def addJobPage(request):
         
         messages.warning(request,"You are not Recruiter")
         
-        
+@login_required      
 def ApplyNow(request,job_title,apply_id):
     
     current_user=request.user
@@ -149,86 +99,6 @@ def ApplyNow(request,job_title,apply_id):
 
 
 @login_required
-def createBasicInfo(request):
-    if request.user.user_type == 'jobseeker' or request.user.user_type == 'recruiter' :
-        current_user = request.user
-        
-        if request.method == 'POST':
-            resume, created = BasicInfoModel.objects.get_or_create(user=current_user)
-            
-            resume.contact_No = request.POST.get("contact_No")
-            resume.Designation = request.POST.get("Designation")
-            resume.MySettingsPage_Pic = request.FILES.get("MySettingsPage_Pic")
-            resume.Carrer_Summary = request.POST.get("Carrer_Summary")
-            resume.Age = request.POST.get("Age")
-            resume.Gender = request.POST.get("Gender")
-            resume.save()
-            
-            current_user.first_name = request.POST.get("first_name")
-            current_user.last_name = request.POST.get("second_name")
-            current_user.save()
-            
-            messages.success(request, "Resume created successfully.")
-            return redirect('MySettingsPage')  
-        
-        return render(request, "Common/createBasicInfo.html")
-    elif request.user.user_type == 'admin':
-        messages.warning(request, "You are not authorized to access this page.")
-        return render(request, "Common/createBasicInfo.html") 
-    
-@login_required
-def profile_view(request):
-    current_user = request.user
-
-    try:
-        information = get_object_or_404(BasicInfoModel, user=current_user)
-    except Http404:
-        messages.warning(request, "You don't have a resume. Please create one.")
-        return redirect('createBasicInfo') 
-
-    languages = LanguageModel.objects.filter(user=current_user)
-    skills = SkillModel.objects.filter(user=current_user)
-    education = EducationModel.objects.filter(user=current_user)
-    interests = InterestModel.objects.filter(user=current_user)
-    experiences = ExperienceModel.objects.filter(user=current_user)
-
-    context = {
-        'Information': information,
-        'Languages': languages,
-        'Skills': skills,
-        'Education': education,
-        'Interests': interests,
-        'Experiences': experiences,
-    }
-    
-    return render(request, "Common/profilePage.html", context)
-
-    
-@login_required
-def MySettingsPage(request):
-    
-    current_user=request.user
-    
-    myLanguage=LanguageModel.objects.filter(user=current_user)
-    mySkill=SkillModel.objects.filter(user=current_user)
-    myEducation=EducationModel.objects.filter(user=current_user)
-    myInterest=InterestModel.objects.filter(user=current_user)
-    myExperience=ExperienceModel.objects.filter(user=current_user)
-    
-    context={
-        "myLanguage":myLanguage,
-        "mySkill":mySkill,
-        "myInterest":myInterest,
-        'myEducation':myEducation,
-        "myExperience":myExperience
-    }
-    
-    return render(request,"Common/MySettingsPage.html",context)
-
-
-
-
-
 def createdJob(request):
     
     current_user=request.user
@@ -240,7 +110,7 @@ def createdJob(request):
     }
     return render(request,"myAdmin/createdJob.html",context)
 
-
+@login_required
 def editJob(request,edit_id):
     
     job=JobModel.objects.get(id=edit_id)
@@ -272,14 +142,14 @@ def editJob(request,edit_id):
     
     return render(request,"myAdmin/EditJobPage.html",context)
 
-
+@login_required
 def deleteJob(request,delete_id):
     
     job=JobModel.objects.get(id=delete_id).delete()
     
     return redirect("createdJob")
 
-
+@login_required
 def viewJob(request,view_id):
     
     job=JobModel.objects.get(id=view_id)
@@ -290,7 +160,7 @@ def viewJob(request,view_id):
     
     return render(request,"Common/viewJob.html",context)
 
-
+@login_required
 def applicantList(request,job_id):
     
     job = get_object_or_404(JobModel, id=job_id)
@@ -304,6 +174,7 @@ def applicantList(request,job_id):
     
     return render(request,"myAdmin/applicantList.html",context)
 
+@login_required
 def callForInterview(request, job_id, application_id):
     application = get_object_or_404(jobApplyModel, id=application_id)
 
@@ -313,6 +184,7 @@ def callForInterview(request, job_id, application_id):
     messages.success(request, 'The applicant has been called for an interview.')
     return redirect('applicantList', job_id=job_id)
 
+@login_required
 def rejectApplication(request, job_id, application_id):
     application = get_object_or_404(jobApplyModel, id=application_id)
 
@@ -332,7 +204,7 @@ def rejectApplication(request, job_id, application_id):
 
     return redirect('applicantList', job_id=job_id)
 
-
+@login_required
 def message_list(request, job_id):
     job = get_object_or_404(JobModel, id=job_id)
     messages = MessageModel.objects.filter(application__job=job)
@@ -344,6 +216,7 @@ def message_list(request, job_id):
     
     return render(request, 'myAdmin/message_list.html', context)
 
+@login_required
 def send_message(request, job_id, application_id):
     current_user = request.user
     job = get_object_or_404(JobModel, id=job_id)
@@ -385,7 +258,7 @@ def send_message(request, job_id, application_id):
         return render(request, 'myAdmin/send_message.html', context)
 
 
-
+@login_required
 def viewMessage(request, viewMessage_id):
     application = get_object_or_404(jobApplyModel, id=viewMessage_id)
     
@@ -398,7 +271,7 @@ def viewMessage(request, viewMessage_id):
     
     return render(request, "Seeker/viewMessage.html",context )
 
-
+@login_required
 def appliedJob(request):
     current_user = request.user
 
@@ -437,7 +310,7 @@ def myMessages(request):
         'interviewed_apps': selected_apps,  # Pass the selected applications to the context
     }
     return render(request, 'Common/myMessages.html', context)
-
+@login_required
 def addLanugage(request):
     # Check if the user is a viewer
     if request.user.user_type != 'jobseeker':
@@ -477,7 +350,7 @@ def addLanugage(request):
 
 
 
-# Add Skill View
+@login_required
 def addSkillPage(request):
     # Check if the user is a viewer
     if request.user.user_type != 'jobseeker':
@@ -513,7 +386,7 @@ def addSkillPage(request):
     return render(request, "myAdmin/addSkill.html", context)
 
 
-# Add Education View
+@login_required
 def add_education(request):
     # Check if the user is a viewer
     if request.user.user_type != 'jobseeker':
@@ -552,8 +425,7 @@ def add_education(request):
     return render(request, 'myAdmin/addEducation.html', context)
 
 
-
-# Add Interest View
+@login_required
 def add_interest(request):
     # Check if the user is a viewer
     if request.user.user_type != 'jobseeker':
@@ -579,6 +451,8 @@ def add_interest(request):
 
     return render(request, 'myAdmin/addInterest.html')
 
+
+@login_required
 def add_experience(request):
     # Check if the user is a viewer
     if request.user.user_type != 'jobseeker':
@@ -611,37 +485,40 @@ def add_experience(request):
 
     return render(request, 'myAdmin/addExperience.html')
 
-
-
-
+@login_required
 def delete_language(request, id):
     language = get_object_or_404(LanguageModel, id=id)
     language.delete()
     messages.success(request, "Language deleted successfully.")
     return redirect('MySettingsPage')  # Replace with your actual MySettingsPage URL name
 
+@login_required
 def delete_skill(request, id):
     skill = get_object_or_404(SkillModel, id=id)
     skill.delete()
     messages.success(request, "Skill deleted successfully.")
     return redirect('MySettingsPage')
 
+@login_required
 def delete_interest(request, id):
     interest = get_object_or_404(InterestModel, id=id)
     interest.delete()
     messages.success(request, "Interest deleted successfully.")
     return redirect('MySettingsPage')
 
+@login_required
 def delete_education(request, id):
     education = get_object_or_404(EducationModel, id=id)
     education.delete()
     messages.success(request, "Education deleted successfully.")
     return redirect('MySettingsPage')
 
+@login_required
 def delete_experience(request, id):
     experience = get_object_or_404(ExperienceModel, id=id)
     experience.delete()
     messages.success(request, "Experience deleted successfully.")
     return redirect('MySettingsPage')
+
 
 

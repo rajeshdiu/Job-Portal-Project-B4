@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.urls import path
 from myProject.views import *
+from myProject.commonviews import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -43,6 +44,7 @@ urlpatterns = [
     
     path('settings/', MySettingsPage, name='MySettingsPage'),
     path('profile_view/', profile_view, name='profile_view'),
+    path('changePasswordPage/', changePasswordPage, name='changePasswordPage'),
     
     
     path('delete_language/<int:id>/', delete_language, name='delete_language'),
