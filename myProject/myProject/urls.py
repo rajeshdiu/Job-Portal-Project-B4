@@ -46,6 +46,8 @@ urlpatterns = [
     path('profile_view/', profile_view, name='profile_view'),
     path('changePasswordPage/', changePasswordPage, name='changePasswordPage'),
     
+    path('searchJob/', searchJob, name='searchJob'),
+    
     
     path('delete_language/<int:id>/', delete_language, name='delete_language'),
     path('delete_skill/<int:id>/', delete_skill, name='delete_skill'),

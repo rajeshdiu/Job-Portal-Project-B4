@@ -19,6 +19,29 @@ from myApp.models import *
 
 from django.templatetags.static import static  # Import the static function
 
+
+def searchJob(request):
+    
+    query = request.GET.get('query')
+    
+    if query:
+        
+        jobs = JobModel.objects.filter(Q(job_title__icontains=query) 
+                                       |Q(description__icontains=query) 
+                                       |Q(employment_type__icontains=query) 
+                                       |Q(company_name__icontains=query))
+    
+    else:
+        jobs = JobModel.objects.none()
+        
+    context={
+        'jobs':jobs,
+        'query':query
+    }
+    
+    return render(request,"Common/search.html",context)
+
+
 @login_required
 def JobFeed(request):
     

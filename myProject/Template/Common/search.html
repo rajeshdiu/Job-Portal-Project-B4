@@ -54,23 +54,23 @@
 
     <!-- Search Bar -->
     <div class="search-bar mb-4">
-        <div class="input-group">
+        
+        <form method="GET" action="{% url 'searchJob' %}">
 
-            <form action=" {% url 'searchJob' %} " method="GET">
-
-                <input type="text" class="form-control" name="query" placeholder="Search for jobs..." id="search-input">
+            <div class="input-group">
+                <input type="text" name="query" class="form-control" placeholder="Search for jobs..." required>
                 <div class="input-group-append">
-                    <button class="btn btn-success" id="search-button">Search</button>
+                    <button class="btn btn-primary" type="submit">Search</button>
                 </div>
-                
-            </form>
-            
-        </div>
+            </div>
+        </form>
     </div>
 
     <!-- Job Listing -->
     <div class="job-list">
-        {% for job in Job %}
+        <h2>You searched for: "{{ query }}"</h2>
+
+        {% for job in jobs %}
         <div class="card mb-3 shadow-sm">
             <div class="card-body">
                 <h2 class="card-title">{{ job.job_title }}</h2>
@@ -78,8 +78,8 @@
                 <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
                 <p class="card-text"><strong>Salary:</strong> ${{ job.salary|default:"Not specified" }}</p>
                 <p class="card-text"><strong>Employment Type:</strong> {{ job.employment_type|default:"Not specified" }}</p>
-               
                 <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline|default:"Not specified" }}</p>
+                
                 <!-- Display the 'Apply Now' and 'View Job' buttons for jobseekers -->
                 {% if request.user.user_type == 'jobseeker' %}
                 <a href="{% url 'ApplyNow' job.job_title job.id %}" class="btn btn-primary">Apply Now</a>
